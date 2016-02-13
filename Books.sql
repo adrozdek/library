@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 13 Lut 2016, 19:06
+-- Czas wygenerowania: 13 Lut 2016, 20:18
 -- Wersja serwera: 5.5.44-0ubuntu0.14.04.1
 -- Wersja PHP: 5.5.9-1ubuntu4.11
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `Books` (
   `author` varchar(70) COLLATE utf8_polish_ci NOT NULL,
   `description` varchar(500) COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=667 ;
 
 --
 -- Zrzut danych tabeli `Books`
@@ -45,7 +45,8 @@ INSERT INTO `Books` (`id`, `title`, `author`, `description`) VALUES
 (5, 'Kalejdoskop', 'Danielle Steel', 'Ta przepe'),
 (17, 'Ofiara', 'John Caldon', 'ofiara losu'),
 (18, 'Wezuwiusz', 'Eryk Lato', 'wulkany i wulkany'),
-(25, 'Oaza', 'Ozzy Erbson', 'oaza spokoju');
+(25, 'Oaza', 'Ozzy Erbson', 'oaza spokoju'),
+(666, 'Harry Potter', 'J K Rownling', 'młody czarodziej i Hogwart. Always');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

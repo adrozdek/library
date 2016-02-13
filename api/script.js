@@ -17,7 +17,7 @@ $(document).ready(function() {
                 if(confirm("Jesteś pewny, że chcesz usunąć?")) {
                     var titleId = $(this).parent().parent().attr('id');
                     //samo confirm("Czy na pewno chcesz usunąć?") i tak wykona. trzeba dodać if
-                    
+
                     $.ajax({
                         url: './api/books.php',
                         type: 'DELETE',
@@ -32,6 +32,7 @@ $(document).ready(function() {
                         },
                         complete: function () {
                             console.log("Ukonczono ddelete");
+
                         }
                     });
                 }
@@ -51,80 +52,88 @@ $(document).ready(function() {
 
                 if(!($(moreInfo).hasClass('moreInfo'))) {
 
-                    $.ajax({
-                        url: './api/books.php?id=' + idtytulu,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            console.log(result);
-                            var valueInfo = $("<h3>Autor: </h3>" + result.author + "<h3>Opis: </h3>" + result.description + "<br /> <button class='edit'>Edytuj</button>");
-                            $(moreInfo).append(valueInfo);
-                            $(moreInfo).addClass('moreInfo');
-                            $(thisButton).html('Mniej');
-                            $(thisButton).attr("disabled", false);  //uaktywnia ponownie przycisk
+                    if(idtytulu == 666){
+                        alert("Książka zakazana. Nie można wyświetlić informacji!");
+                        $(this).attr("disabled", false);
+                    }
+                    else {
+
+                        $.ajax({
+                            url: './api/books.php?id=' + idtytulu,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (result) {
+                                console.log(result);
+
+                                var valueInfo = $("<h3>Autor: </h3>" + result.author + "<h3>Opis: </h3>" + result.description + "<br /> <button class='edit'>Edytuj</button>");
+                                $(moreInfo).append(valueInfo);
+                                $(moreInfo).addClass('moreInfo');
+                                $(thisButton).html('Mniej');
+                                $(thisButton).attr("disabled", false);  //uaktywnia ponownie przycisk
 
 
-                            $('button.edit').on('click', function(){
-                                $(this).attr('disabled', true);
+                                $('button.edit').on('click', function () {
+                                    $(this).attr('disabled', true);
 
-                                if(!($(this).hasClass('cancel'))) {
-                                    $(this).html('Anuluj');
-                                    var editForm = $('<div class="edit"><form action="books.php" method="PUT"><p><label>Nowy tytuł: </label><input type="text" name="editTitle" value="'+result.title+'"></p> <p><label>Nowy autor:</label><input type="text" name="editAuthor" value="' +result.author+ '"></p> <p><label>Nowy opis: </label><textarea name="editDescription" cols="40" rows="5">'+result.description+'</textarea></p></form><button class="update">Zatwierdź</button></div>');
-                                    $(this).before($(editForm));
-                                    $(this).addClass('cancel');
-                                    $(this).attr('disabled', false);
+                                    if (!($(this).hasClass('cancel'))) {
+                                        $(this).html('Anuluj');
+                                        var editForm = $('<div class="edit"><form action="books.php" method="PUT"><p><label>Nowy tytuł: </label><input type="text" name="editTitle" value="' + result.title + '"></p> <p><label>Nowy autor:</label><input type="text" name="editAuthor" value="' + result.author + '"></p> <p><label>Nowy opis: </label><textarea name="editDescription" cols="40" rows="5">' + result.description + '</textarea></p></form><button class="update">Zatwierdź</button></div>');
+                                        $(this).before($(editForm));
+                                        $(this).addClass('cancel');
+                                        $(this).attr('disabled', false);
 
-                                    $('button.update').on('click', function(e){
+                                        $('button.update').on('click', function (e) {
 
-                                        var newTitle = $('input[name=editTitle]').val();
-                                        var newAuthor = $('input[name=editAuthor]').val();
-                                        var newDescription = $("textarea[name='editDescription']").val();
+                                            var newTitle = $('input[name=editTitle]').val();
+                                            var newAuthor = $('input[name=editAuthor]').val();
+                                            var newDescription = $("textarea[name='editDescription']").val();
 
-                                        console.log(newAuthor);
-                                        console.log(newTitle);
+                                            console.log(newAuthor);
+                                            console.log(newTitle);
 
-                                        $.ajax({
-                                            url: './api/books.php',
-                                            type: 'PUT',
-                                            //contentType: "text/plain; charset=UTF-8",
-                                            data: 'id=' + idtytulu + '&title=' + newTitle + '&author=' + newAuthor + '&description=' + newDescription,
-                                            success: function (result) {
-                                                window.location.reload(true);
-                                                //console.log("Put ukończone sukcesem");
-                                                //console.log(result);
-                                            },
-                                            error: function (){
-                                                console.log("Error w buttonie update");
+                                            $.ajax({
+                                                url: './api/books.php',
+                                                type: 'PUT',
+                                                //contentType: "text/plain; charset=UTF-8",
+                                                data: 'id=' + idtytulu + '&title=' + newTitle + '&author=' + newAuthor + '&description=' + newDescription,
+                                                success: function (result) {
+                                                    window.location.reload(true);
+                                                    //console.log("Put ukończone sukcesem");
+                                                    //console.log(result);
+                                                },
+                                                error: function () {
+                                                    console.log("Error w buttonie update");
 
-                                            },
-                                            complete: function (){
-                                                console.log("Button update ukończony");
+                                                },
+                                                complete: function () {
+                                                    console.log("Button update ukończony");
 
-                                            }
+                                                }
 
+                                            });
                                         });
-                                    });
 
 
-                                }
-                                else{
-                                    $(this).html('Edytuj');
-                                    $(this).prev().remove();
-                                    $(this).removeClass('cancel');
-                                    $(this).attr('disabled', false);
-                                }
+                                    }
+                                    else {
+                                        $(this).html('Edytuj');
+                                        $(this).prev().remove();
+                                        $(this).removeClass('cancel');
+                                        $(this).attr('disabled', false);
+                                    }
 
-                            });
+                                });
 
 
-                        },
-                        error: function () {
-                            console.log("Error button.show");
-                        },
-                        complete: function () {
-                            console.log("Button show ukończony");
-                        }
-                    });
+                            },
+                            error: function () {
+                                console.log("Error button.show");
+                            },
+                            complete: function () {
+                                console.log("Button show ukończony");
+                            }
+                        });
+                    }
 
 
 
@@ -189,7 +198,6 @@ $(document).ready(function() {
         }
 
     });
-
 
 
 

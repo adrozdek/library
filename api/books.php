@@ -4,6 +4,7 @@ require_once("../src/connections.php");
 
 
 if($_SERVER['REQUEST_METHOD'] == 'GET' && !(isset($_GET['id']))) {
+
     $allBooks = Book::LoadFromDB();
 //var_dump($allBooks);
     echo json_encode($allBooks);
