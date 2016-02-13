@@ -22,10 +22,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+
     parse_str(file_get_contents("php://input"),$put_vars);
 
-    //echo($put_vars['id']);
-    $update = Book::UpdateBook($put_vars['id'], $put_vars['title'], $put_vars['author'], $put_vars['description']);
+    echo($put_vars['id']);
+    echo($put_vars['title']);
+    echo($put_vars['author']);
+    echo($put_vars['description']);
+    Book::UpdateBook($put_vars['id'], $put_vars['title'], $put_vars['author'], $put_vars['description']);
 
     //echo json_encode($book);
     //nie działa update. 500 internal server error:

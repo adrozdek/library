@@ -17,7 +17,7 @@ $(document).ready(function() {
                 if(confirm("Jesteś pewny, że chcesz usunąć?")) {
                     var titleId = $(this).parent().parent().attr('id');
                     //samo confirm("Czy na pewno chcesz usunąć?") i tak wykona. trzeba dodać if
-
+                    
                     $.ajax({
                         url: './api/books.php',
                         type: 'DELETE',
@@ -69,30 +69,29 @@ $(document).ready(function() {
 
                                 if(!($(this).hasClass('cancel'))) {
                                     $(this).html('Anuluj');
-                                    var editForm = $("<div class='edit'><form action='books.php' method='PUT'><p><label>Nowy tytuł: </label><input type='text' name='editTitle' value='"+result.title+"'></p> <p><label>Nowy autor:</label><input type='text' name='editAuthor' value='" +result.author+ "'></p> <p><label>Nowy opis: </label><textarea name='editDescription' cols='40' rows='5'>"+result.description+"</textarea></p></form><button class='update'>Zatwierdź</button></div>");
+                                    var editForm = $('<div class="edit"><form action="books.php" method="PUT"><p><label>Nowy tytuł: </label><input type="text" name="editTitle" value="'+result.title+'"></p> <p><label>Nowy autor:</label><input type="text" name="editAuthor" value="' +result.author+ '"></p> <p><label>Nowy opis: </label><textarea name="editDescription" cols="40" rows="5">'+result.description+'</textarea></p></form><button class="update">Zatwierdź</button></div>');
                                     $(this).before($(editForm));
                                     $(this).addClass('cancel');
                                     $(this).attr('disabled', false);
 
                                     $('button.update').on('click', function(e){
 
-                                        console.log("klikam cie");
-                                        e.preventDefault();
-                                        e.stopPropagation();
+                                        var newTitle = $('input[name=editTitle]').val();
+                                        var newAuthor = $('input[name=editAuthor]').val();
+                                        var newDescription = $("textarea[name='editDescription']").val();
 
-                                        var newTitle = $("input[name='editTitle']");
-                                        var newAuthor = $("input[name='editAuthor']");
-                                        var newDescription = $("textarea[name='editDescription']");
+                                        console.log(newAuthor);
+                                        console.log(newTitle);
 
                                         $.ajax({
                                             url: './api/books.php',
                                             type: 'PUT',
                                             //contentType: "text/plain; charset=UTF-8",
-                                            data: 'id=' + idtytulu + '&title=' + newTitle + '"&author=' + newAuthor + '"&description=' + newDescription,
+                                            data: 'id=' + idtytulu + '&title=' + newTitle + '&author=' + newAuthor + '&description=' + newDescription,
                                             success: function (result) {
-                                                //window.location.reload(true);
-                                                console.log("Put ukończone sukcesem");
-                                                console.log(result);
+                                                window.location.reload(true);
+                                                //console.log("Put ukończone sukcesem");
+                                                //console.log(result);
                                             },
                                             error: function (){
                                                 console.log("Error w buttonie update");
@@ -149,8 +148,7 @@ $(document).ready(function() {
 
 
     $('.add').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+
         $(this).attr('disabled', true);
         var bookTitle = $('input[name="title"]').val();
         //console.log($('input[name="title"]').html());
@@ -166,6 +164,7 @@ $(document).ready(function() {
             dataToSend.title = bookTitle;
             dataToSend.author = bookAuthor;
             dataToSend.description = bookDescription;
+
 
             $.ajax({
                 url: 'api/books.php',
